@@ -11,12 +11,18 @@
 
         <h2>{{ $project->title }}</h2>
 
-        <p>
+        <p class="mt-4">
             Type: {{ $project->type ? $project->type->name : 'No type'}}
         </p>
 
+        <div class="mt-4">
+            @foreach ($project->technologies as $technology)
+                Technology: {{ $technology->name }}
+            @endforeach
+        </div>
+
         @if ($project->cover_image)
-            <div>
+            <div class="mt-4">
                 <img src="{{ asset('storage/' . $project->cover_image) }}" alt="">
             </div>
         @else

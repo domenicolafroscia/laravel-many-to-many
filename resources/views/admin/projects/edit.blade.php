@@ -62,6 +62,17 @@
 
             </div>
 
+            <div class="mb-3">
+                <h4>Select technologies</h4>
+
+                @foreach ($technologies as $technology)
+                    <div class="form-check">
+                        <input type="checkbox" value="{{ $technology->id }}" name="technologies[]" id="technology-{{ $technology->id }}" @checked($errors->any() ? in_array($technology->id, old('technologies', [])) : $project->technologies->contains($technology))>
+                        <label for="technology-{{ $technology->id }}">{{ $technology->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+
             <div class="actions">
                 <button class="btn btn-warning" type="submit">Save</button>
                 <a class="btn btn-danger" href="{{ url()->previous() }}">Back</a>

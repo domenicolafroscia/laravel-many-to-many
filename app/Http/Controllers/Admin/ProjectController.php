@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,6 +22,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
+
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -32,7 +34,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -53,6 +57,10 @@ class ProjectController extends Controller
        
         $project->save();
 
+        if ($request->has('technologies')) {
+            $project->technologies()->attach($request->technologies);
+        }
+
         return redirect()->route('admin.projects.show', ['project' => $project->slug])->with('message', 'New project: ' . ' ' . '"' . $project->title . '"' . ' ' . 'created successfully');
     }
 
@@ -64,9 +72,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        // dd($project);
         return view('admin.projects.show', compact('project'));
-
     }
 
     /**
@@ -78,6 +84,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+
         return view('admin.projects.edit', compact('project', 'types'));
     }
 

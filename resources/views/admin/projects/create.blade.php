@@ -61,6 +61,25 @@
                     </div>
                 @enderror
             </div>
+            
+            <div class="mb-3 has-validation">
+                <h4>Select technologies</h4>
+
+                @foreach ($technologies as $technology)
+                    <div class="form-check">
+                        <input type="checkbox" name="technologies[]" id="technology-{{ $technology->id }}" value="{{ $technology->id }}" @checked(in_array($technology->id, old('technologies', [])))>
+                        <label for="technology-{{ $technology->id }}">
+                            {{ $technology->name }}
+                        </label>
+                    </div>
+                @endforeach
+
+                @error('technologies')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
             <button class="btn btn-success" type="submit">Save</button>
             <a class="btn btn-danger" href="{{ url()->previous() }}">Back</a>
